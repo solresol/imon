@@ -1,0 +1,57 @@
+\documentclass[a4paper,10pt,twocolumn]{article}
+\title{pingMonitor.py}
+\author{{\small Greg Baker -- greg.baker@ifost.org.au}}
+\setlength{\parskip}{2mm}
+\parindent=0mm
+\begin{document}
+\maketitle
+\tableofcontents
+\newcommand{\pingmon}[0]{\texttt{pingMonitor.py}}
+
+\section{License}
+
+This software is copyright \copyright Greg Baker (greg.baker@ifost.org.au),
+but is licensed to anyone who wants to use it for any reason
+in any way.  If you want to let me know what you do with it,  even better.
+Needless to say,  it doesn't come with any warranty or support.  If it
+breaks,  you get to keep all the pieces.
+
+\section{Purpose}
+
+This program is designed to be run from cron,  and pings a list of
+computers.  If any of them are down,  it sends an email to the system
+admin,  unless it has sent one in the recent past.  It also alerts
+when a machine that was down comes back up again.
+
+\section{Requirements}
+
+\pingmon uses the Python interpreter,  it doesn't greatly matter which
+version.  Anything in the last few years should work, I think.  It is
+slightly Unix dependant (e.g.  ping has stdout redirected,  mail is sent
+by piping through a popen to mail),  but shouldn't be too hard to fix.
+
+\section{Configuration}
+
+The list of machines to ping is typically stored in 
+\texttt{/usr/local/etc/importantDevices}.
+They can be listed as IP addresses or hostnames.  
+Blank lines are ignored,  as are lines beginning with \# or ; (semicolon).
+
+
+At the top of the script are the configuration options -- e.g. how
+regularly to remind you about machines that are still down (at the
+moment, this is every hour); how long to wait for the ping to complete
+before deciding that the remote host is temporarily
+unreachable (currently five seconds);
+how long to wait between spawning off ping processes (it runs the
+pings in parallel); who to send email to in the event of some change
+in status;  how many times a machine has to be unreachable before it
+is declared ``down'' (currently 5).
+One day I will put this into a config file or something.
+
+It writes into files in the directory 
+\texttt{/var/imon/pingMonitor},  which is also configurable.
+It stores the last recorded status (and when that was) for each device listed. 
+
+
+\end{document}
